@@ -1,0 +1,6 @@
+[submodule "mosquitto"]
+	path = mosquitto
+	url = http://github.com/eclipse/mosquitto.git
+[submodule "mosquitto-auth-plug"]
+	path = mosquitto-auth-plug
+	url = http://github.com/jpmens/mosquitto-auth-plug.git

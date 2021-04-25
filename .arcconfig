@@ -1,0 +1,5 @@
+{
+    "phabricator.uri" : "https://phabricator.wumii.net/",
+    "history.immutable" : false,
+    "repository.callsign" : "MQTT-PLUG"
+}
