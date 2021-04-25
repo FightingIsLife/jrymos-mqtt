@@ -212,41 +212,16 @@ int be_redis_aclcheck(void *handle, const char *clientid, const char *username, 
 		}
 		return BACKEND_DENY;
 	}
-	
-	struct redis_backend *conf = (struct redis_backend *)handle;
-
-	redisReply *r;
-	
-	// 禁止普通用户write
-	if (acc == MOSQ_ACL_WRITE) {
-		_log(LOG_DEBUG, "hacker attack username %s topic %s", username, topic);
-		return BACKEND_DENY;
-	}
-	
-	if (conf == NULL || conf->redis == NULL || username == NULL)
-		return BACKEND_DEFER;
-
-	if (strlen(conf->aclquery) == 0) {
-		_log(LOG_DEBUG, "not config redis aclquery");
-		return BACKEND_DEFER;
-	}
-	char *query = malloc(strlen(conf->aclquery) + strlen(username) + strlen(topic) + 128);
-	sprintf(query, conf->aclquery, username, topic);
-
-    // todo: 此处可以优化的点：增加一个前置过滤，而不用去查redis，或者是本地缓存
-    // 进行一次redis查询验证client是否可以进行连接
-	r = redisCommand(conf->redis, query);
-	if (r == NULL || conf->redis->err != REDIS_OK) {
-		be_redis_reconnect(conf);
-		return BACKEND_ERROR;
-	}
-	free(query);
-
-	int answer = 0;
-	if (r->type == REDIS_REPLY_STRING) {
-		answer = 1;
-	}
-	freeReplyObject(r);
-	return (answer) ? BACKEND_ALLOW : BACKEND_DEFER;
+	char *ut = malloc(strlen(username) + strlen(topic) + 2);
+	strcpy(str,s1);
+    strcat(str,'-');
+    strcat(str,s2);
+    if (strcmp(ut, clientid) == 0) {
+        free(ut);
+        return BACKEND_ALLOW;
+    } else {
+        free(ut);
+        return BACKEND_DEFER;
+    }
 }
 #endif /* BE_REDIS */
