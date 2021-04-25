@@ -201,10 +201,10 @@ int be_redis_aclcheck(void *handle, const char *clientid, const char *username, 
 	if(strcmp(username, "jrymos") == 0) {
 		int i = 0;
 		if(sizeof(topic) >= 7
-			&& topic[i++] == 'n' 
-			&& topic[i++] == 'a'
-		        && topic[i++] == 'g'	
-			&& topic[i++] == 'i' 
+			&& topic[i++] == 'j'
+			&& topic[i++] == 'r'
+		    && topic[i++] == 'y'
+			&& topic[i++] == 'm'
 			&& topic[i++] == 'o' 
 			&& topic[i++] == 's'
 			&& topic[i++] == '/') {
@@ -233,7 +233,8 @@ int be_redis_aclcheck(void *handle, const char *clientid, const char *username, 
 	char *query = malloc(strlen(conf->aclquery) + strlen(username) + strlen(topic) + 128);
 	sprintf(query, conf->aclquery, username, topic);
 
-
+    // todo: 此处可以优化的点：增加一个前置过滤，而不用去查redis，或者是本地缓存
+    // 进行一次redis查询验证client是否可以进行连接
 	r = redisCommand(conf->redis, query);
 	if (r == NULL || conf->redis->err != REDIS_OK) {
 		be_redis_reconnect(conf);
