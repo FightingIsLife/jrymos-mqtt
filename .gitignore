@@ -21,3 +21,4 @@ backup/
 .env
 mosquitto
 mosquitto-auth-plug
+
