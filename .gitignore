@@ -19,6 +19,6 @@ backup/
 *.sln
 .vscode
 .env
-mosquitto
-mosquitto-auth-plug
+mosquitto/
+mosquitto-auth-plug/
 
